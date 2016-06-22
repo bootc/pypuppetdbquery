@@ -97,11 +97,18 @@ class Lexer(object):
     t_ASTERISK = r'\*'
     t_HASH = r'[#]'
     t_DOT = r'\.'
-    t_NOT = r'not'
-    t_AND = r'and'
-    t_OR = r'or'
     t_EXPORTED = r'@@'
     t_AT = r'@'
+
+    # Keywords
+    def t_keyword(self, t):
+        r'not|and|or'
+        # Tokens defined by fuctions are added before regular expression tokens
+        # so we must define a function to handle our keywords else they will be
+        # lexed as bareword strings. The type here is just the uppercase
+        # version of the token value.
+        t.type = t.value.upper()
+        return t
 
     # Boolean values
     def t_BOOLEAN(self, t):
