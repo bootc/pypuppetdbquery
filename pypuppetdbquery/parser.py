@@ -190,10 +190,10 @@ class Parser(object):
         pass
 
     precedence = (
-        ('right', 'NOT'),
-        ('left', 'EQUALS', 'MATCH', 'LESSTHAN', 'GREATERTHAN'),
-        ('left', 'AND'),
         ('left', 'OR'),
+        ('left', 'AND'),
+        ('left', 'EQUALS', 'MATCH', 'LESSTHAN', 'GREATERTHAN'),
+        ('right', 'NOT'),
     )
 
     def p_error(self, p):
