@@ -35,6 +35,7 @@ setup(
     url='https://github.com/bootc/pypuppetdbquery/',
     packages=find_packages(),
     install_requires=[
+        'dateutil',
         'ply',
     ],
 )
