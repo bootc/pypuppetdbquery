@@ -90,9 +90,6 @@ class IdentifierPath(Node):
     def __init__(self, component):
         self.components = [component]
 
-    def flatten(self):
-        return '.'.join([x.name for x in self.components])
-
 
 class Subquery(Node):
     def __init__(self, endpoint, expression):
