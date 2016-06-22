@@ -36,12 +36,14 @@ class Parser(object):
         super(Parser, self).__init__()
 
         lex_options = lex_options or {}
+        lex_options.setdefault('debug', False)
         lex_options.setdefault('optimize', True)
 
         self.lexer = Lexer(**lex_options)
         self.tokens = self.lexer.tokens
 
         yacc_options = yacc_options or {}
+        yacc_options.setdefault('debug', False)
         yacc_options.setdefault('optimize', True)
 
         self.parser = yacc.yacc(module=self, **yacc_options)
