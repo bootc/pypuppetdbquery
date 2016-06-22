@@ -1,0 +1,5 @@
+include LICENSE *.md requirements*.txt
+recursive-include pypuppetdbquery *.py
+recursive-include tests *.py
+exclude pypuppetdbquery/lextab.py
+exclude pypuppetdbquery/parsetab.py
