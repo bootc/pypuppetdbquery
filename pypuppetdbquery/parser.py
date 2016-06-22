@@ -62,7 +62,7 @@ class Parser(object):
 
     def p_expr_identifier_path(self, p):
         'expr : identifier_path'
-        p[0] = ast.RegexNodeMatch(p[1])
+        p[0] = ast.RegexpNodeMatch(p[1])
 
     def p_expr_not(self, p):
         'expr : NOT expr'
@@ -99,7 +99,7 @@ class Parser(object):
 
     def p_literal_date(self, p):
         'literal : AT string'
-        p[0] = ast.Date(p[1])
+        p[0] = ast.Date(p[2])
 
     def p_comparison_op(self, p):
         """
@@ -139,7 +139,8 @@ class Parser(object):
 
     def p_identifier_path_nested(self, p):
         'identifier_path : identifier_path DOT identifier'
-        p[0] = p[1].components.append(p[3])
+        p[1].components.append(p[3])
+        p[0] = p[1]
 
     def p_subquery_comparison(self, p):
         'subquery : HASH string DOT comparison_expr'
