@@ -26,3 +26,9 @@ class CompatTestCase(unittest.TestCase):
                 standardMsg = '%s is not an instance of %r' \
                     % (unittest.safe_repr(obj), cls)
                 self.fail(self._formatMessage(msg, standardMsg))
+
+    if not hasattr(unittest.TestCase, 'assertIsNone'):
+        def assertIsNone(self, obj, msg=None):
+            if obj is not None:
+                standardMsg = '%s is not None' % (unittest.safe_repr(obj),)
+                self.fail(self._formatMessage(msg, standardMsg))
