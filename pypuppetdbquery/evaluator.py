@@ -34,7 +34,7 @@ class Evaluator(object):
 
         return ['in', 'certname', [
             'extract', 'certname', [
-                "select_{}".format(to_mode), query]]]
+                "select_{0}".format(to_mode), query]]]
 
     def _comparison(self, operator, left, right):
         if operator[0] == '!':
@@ -53,7 +53,7 @@ class Evaluator(object):
         klass = node.__class__.__name__
         underscore = self.DECAMEL_RE.sub(r'_\1', klass).lower()
 
-        visitor = getattr(self, '_visit_{}'.format(underscore))
+        visitor = getattr(self, '_visit_{0}'.format(underscore))
         return visitor(node, path)
 
     def _visit_literal(self, node, path):

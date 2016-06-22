@@ -199,6 +199,6 @@ class Parser(object):
 
     def p_error(self, p):
         if p:
-            raise ParseException("before: {}".format(p.value), p.lexpos)
+            raise ParseException("before: {0}".format(p.value), p.lexpos)
         else:
             raise ParseException('at end of input', None)

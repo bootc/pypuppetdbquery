@@ -153,5 +153,5 @@ class Lexer(object):
 
     # Error handling rule
     def t_error(self, t):
-        msg = "Illegal character '{}'".format(t.value[0])
+        msg = "Illegal character '{0}'".format(t.value[0])
         raise LexException(msg, t.lexpos)
