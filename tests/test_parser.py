@@ -16,13 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from pypuppetdbquery import ast
 from pypuppetdbquery.parser import Parser
+from util import CompatTestCase
 
 
-class TestParser(unittest.TestCase):
+class TestParser(CompatTestCase):
     def setUp(self):
         self.parser = Parser(
             lex_options={
