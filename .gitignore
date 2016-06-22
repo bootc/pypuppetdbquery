@@ -87,3 +87,11 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# vim swap files
+.*.swp
+
+# PLY generated files
+/pypuppetdbquery/lextab.py
+/pypuppetdbquery/parser.out
+/pypuppetdbquery/parsetab.py
