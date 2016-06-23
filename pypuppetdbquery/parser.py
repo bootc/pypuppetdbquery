@@ -161,11 +161,11 @@ class Parser(object):
         'resource_expr : string LBRACK identifier RBRACK block_expr'
         p[0] = ast.Resource(p[1], p[3], False, p[5])
 
-    def p_resource_expr_expored(self, p):
+    def p_resource_expr_exported(self, p):
         'resource_expr : EXPORTED string LBRACK identifier RBRACK'
         p[0] = ast.Resource(p[2], p[4], True)
 
-    def p_resource_expr_expored_param(self, p):
+    def p_resource_expr_exported_param(self, p):
         'resource_expr : EXPORTED string LBRACK identifier RBRACK block_expr'
         p[0] = ast.Resource(p[2], p[4], True, p[6])
 
