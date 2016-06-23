@@ -74,6 +74,7 @@ class Lexer(object):
         'BOOLEAN',
         'NUMBER',
         'STRING',
+        'FLOAT',
         'EXPORTED',
         'AT',
     )
@@ -113,6 +114,12 @@ class Lexer(object):
     def t_BOOLEAN(self, t):
         r'true|false'
         t.value = (t.value == 'true')
+        return t
+
+    # Floating-point numbers
+    def t_FLOAT(self, t):
+        r'-?\d+\.\d+'
+        t.value = float(t.value)
         return t
 
     # Numeric values

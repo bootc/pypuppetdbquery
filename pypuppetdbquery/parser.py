@@ -182,8 +182,8 @@ class Parser(object):
         p[0] = p[1]
 
     def p_float(self, p):
-        'float : NUMBER DOT NUMBER'
-        p[0] = float(p[1] + '.' + p[3])
+        'float : FLOAT'
+        p[0] = p[1]
 
     def p_empty(self, p):
         'empty :'
