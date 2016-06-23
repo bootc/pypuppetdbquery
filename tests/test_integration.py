@@ -46,7 +46,7 @@ class TestIntegration(unittest.TestCase):
 
     def test_empty_queries(self):
         out = self._parse('')
-        self.assertIsNone(out)
+        self.assertTrue(out is None)
 
     def test_double_quoted_strings(self):
         out = self._parse('foo="bar"')
