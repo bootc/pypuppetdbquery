@@ -15,13 +15,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from json import dumps as json_dumps
 from .evaluator import Evaluator
 from .parser import Parser
 
 
-def parse(s, parser_opts=None, evaluator_opts=None):
+def parse(s, json=True, parser_opts=None, evaluator_opts=None):
     parser = Parser(**(parser_opts or {}))
     evaluator = Evaluator(**(evaluator_opts or {}))
 
     ast = parser.parse(s)
-    return evaluator.evaluate(ast)
+    raw = evaluator.evaluate(ast)
+
+    if json and raw is not None:
+        return json_dumps(raw)
+    else:
+        return raw
