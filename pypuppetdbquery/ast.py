@@ -15,9 +15,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import inspect
+
 
 class Node(object):
-    pass
+    def __repr__(self):
+        # Represent the variables defined in the constructor in the same order
+        # that they are listed in the constructor.
+        members = []
+        for var in inspect.getargspec(self.__init__).args:
+            if var == 'self':
+                continue
+
+            members.append(repr(getattr(self, var)))
+
+        # Put it together with the class name
+        return "{cls}({members})".format(
+            cls=self.__class__.__name__, members=', '.join(members))
 
 
 class Literal(Node):
