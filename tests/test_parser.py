@@ -15,12 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import unittest
+
 from pypuppetdbquery.evaluator import Evaluator
 from pypuppetdbquery.parser import Parser
-from util import CompatTestCase
 
 
-class TestParser(CompatTestCase):
+class TestParser(unittest.TestCase):
     def setUp(self):
         self.parser = Parser(
             lex_options={
