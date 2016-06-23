@@ -194,6 +194,18 @@ class TestParser(CompatTestCase):
                ['=', 'title', 'foo'],
                ['=', 'exported', True]]]]])
 
+    def test_resource_queries_for_exported_resources_with_parameters(self):
+        out = self._parse('@@file[foo]{bar=baz}')
+        self.assertEquals(out, [
+            'in', 'certname',
+            ['extract', 'certname',
+             ['select_resources',
+              ['and',
+               ['=', 'type', 'File'],
+               ['=', 'title', 'foo'],
+               ['=', 'exported', True],
+               ['=', ['parameter', 'bar'], 'baz']]]]])
+
     def test_resource_queries_with_type_and_title(self):
         out = self._parse('file[foo]')
         self.assertEquals(out, [
@@ -409,3 +421,23 @@ class TestParser(CompatTestCase):
             ['=', 'type', 'Class'],
             ['=', 'title', 'Apache'],
             ['=', 'exported', False]])
+
+    def test_boolean_values(self):
+        out = self._parse('foo=true')
+        self.assertEqual(out, [
+            'in', 'certname',
+            ['extract', 'certname',
+             ['select_fact_contents',
+              ['and',
+               ['=', 'path', ['foo']],
+               ['=', 'value', True]]]]])
+
+    def test_float_values(self):
+        out = self._parse('foo=1.024')
+        self.assertEqual(out, [
+            'in', 'certname',
+            ['extract', 'certname',
+             ['select_fact_contents',
+              ['and',
+               ['=', 'path', ['foo']],
+               ['=', 'value', 1.024]]]]])
