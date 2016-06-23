@@ -21,7 +21,11 @@ from pypuppetdbquery.evaluator import Evaluator
 from pypuppetdbquery.parser import Parser
 
 
-class TestParser(unittest.TestCase):
+class TestIntegration(unittest.TestCase):
+    """
+    Test suite for the combination of `pypuppetdb.Lexer`,
+    `pypuppetdbquery.Parser`, and `pypuppetdb.Evaluator`.
+    """
     def setUp(self):
         self.parser = Parser(
             lex_options={
