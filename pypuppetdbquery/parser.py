@@ -134,7 +134,7 @@ class Parser(object):
 
     def p_identifier_path(self, p):
         'identifier_path : identifier'
-        p[0] = ast.IdentifierPath(p[1])
+        p[0] = ast.IdentifierPath([p[1]])
 
     def p_identifier_path_nested(self, p):
         'identifier_path : identifier_path DOT identifier'

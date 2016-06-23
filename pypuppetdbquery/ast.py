@@ -100,8 +100,8 @@ class RegexpIdentifier(Identifier):
 
 
 class IdentifierPath(Node):
-    def __init__(self, component):
-        self.components = [component]
+    def __init__(self, components):
+        self.components = components
 
 
 class Subquery(Node):
