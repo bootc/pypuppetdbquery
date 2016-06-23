@@ -91,7 +91,6 @@ class Evaluator(object):
         right = self._visit(node.right, path)
 
         if path[-1] == 'subquery':
-            print(left)
             if len(left) == 1:
                 left = left[0]
             return self._comparison(node.operator, left, right)
