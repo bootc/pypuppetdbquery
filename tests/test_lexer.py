@@ -22,7 +22,7 @@ from pypuppetdbquery.lexer import Lexer, LexException
 
 class TestLexer(unittest.TestCase):
     """
-    Test suite for `pypuppetdbquery.Lexer`.
+    Test suite for `pypuppetdbquery.lexer.Lexer`.
     """
     def setUp(self):
         self.lexer = Lexer(
