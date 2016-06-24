@@ -16,4 +16,4 @@
 # limitations under the License.
 
 # This must be the only non-comment line in this file.
-__version__ = '0.1.0'
+__version__ = '0.9.0'
