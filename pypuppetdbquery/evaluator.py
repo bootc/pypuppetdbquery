@@ -22,9 +22,28 @@ from . import ast
 
 
 class Evaluator(object):
+    """
+    Converts a :mod:`pypuppetdbquery.ast` Abstract Syntax Tree into a PuppetDB
+    native AST query.
+    """
+
+    #: Regular expression used when converting CamelCase class names to
+    #: underscore_separated names.
     DECAMEL_RE = re.compile(r'(?!^)([A-Z]+)')
 
     def evaluate(self, ast, mode='nodes'):
+        """
+        Process a parsed PuppetDBQuery AST and return a PuppetDB AST.
+
+        The resulting PuppetDB AST is a native Python list. It will need
+        converting to JSON (using :func:`json.dumps`) before it can be used
+        with PuppetDB.
+
+        :param pypuppetdbquery.ast.Query ast: Root of the AST to evaulate
+        :param str mode: PuppetDB endpoint to target
+        :return: PuppetDB AST
+        :rtype: list
+        """
         return self._visit(ast, [mode])
 
     def _subquery(self, from_mode, to_mode, query):

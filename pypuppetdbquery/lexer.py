@@ -19,6 +19,13 @@ import ply.lex as lex
 
 
 class LexException(Exception):
+    """
+    Raised for errors encountered during lexing.
+
+    Such errors may include unknown tokens or unexpected EOF, for example. The
+    position of the lexer when the error was encountered (the index into the
+    input string) is stored in the `position` attribute.
+    """
     def __init__(self, message, position):
         super(LexException, self).__init__(message)
         self.position = position
@@ -26,22 +33,49 @@ class LexException(Exception):
 
 class Lexer(object):
     """
-    Lexer for the PuppetDB query language.
+    Lexer for the PuppetDBQuery language.
+
+    This class uses :func:`ply.lex.lex` to implement the lexer (or tokenizer).
+    It is used by :class:`pypuppetdbquery.parser.Parser` in order to process
+    queries.
+
+    The arguments to the constructor are passed directly to
+    :func:`ply.lex.lex`.
+
+    .. note:: Many of the docstrings in this class are used by
+       :mod:`ply.lex` to build the lexer. These strings are not particularly
+       useful for generating documentation from, so the built documentation for
+       this class may not be very useful.
     """
     def __init__(self, **kwargs):
         super(Lexer, self).__init__()
         self.lexer = lex.lex(object=self, **kwargs)
 
     def input(self, s):
+        """
+        Reset and supply input to the lexer.
+
+        Tokens then need to be obtained using :meth:`token` or the iterator
+        interface provided by this class.
+        """
         self.lexer.input(s)
 
     def token(self):
+        """
+        Obtain one token from the input.
+        """
         return self.lexer.token()
 
     def __iter__(self):
         return self
 
     def next(self):
+        """
+        Implementation of :meth:`iterator.next`.
+
+        Return the next item from the container. If there are no further items,
+        raise the :exc:`StopIteration` exception.
+        """
         t = self.token()
         if t is None:
             raise StopIteration()
@@ -49,7 +83,7 @@ class Lexer(object):
 
     __next__ = next
 
-    # List of token names.
+    #: List of token names handled by the lexer.
     tokens = (
         'LPAREN',
         'RPAREN',

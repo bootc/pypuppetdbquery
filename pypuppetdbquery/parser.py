@@ -22,6 +22,12 @@ from .lexer import Lexer
 
 
 class ParseException(Exception):
+    """
+    Raised for errors encountered during parsing.
+
+    The position of the lexer when the error was encountered (the index into
+    the input string) is stored in the `position` attribute.
+    """
     def __init__(self, message, position):
         super(ParseException, self).__init__(message)
         self.position = position
@@ -29,7 +35,21 @@ class ParseException(Exception):
 
 class Parser(object):
     """
-    Parser for the PuppetDB query language.
+    Parser for the PuppetDBQuery language.
+
+    This class uses :func:`ply.yacc.yacc` to implement the parser. In concert
+    with :class:`pypuppetdbquery.lexer.Lexer`, it produces an Abstract Syntax
+    Tree (AST) as declared in :mod:`pypuppetdbquery.ast`.
+
+    :param dict lex_options: Passed as keyword arguments to
+       :class:`pypuppetdbquery.lexer.Lexer`
+    :param dict yacc_options: Passed as keyword arguments to
+       :func:`ply.yacc.yacc`
+
+    .. note:: Many of the docstrings in this class are used by :mod:`ply.yacc`
+       to build the parser. These strings are not particularly useful for
+       generating documentation from, so the built documentation for this class
+       may not be very useful.
     """
     def __init__(self, lex_options=None, yacc_options=None):
         super(Parser, self).__init__()
@@ -48,8 +68,18 @@ class Parser(object):
         self.parser = yacc.yacc(module=self, **yacc_options)
 
     def parse(self, text, debug=0):
+        """
+        Parse the input string and return an AST.
+
+        :param str text: The query to parse
+        :param bool debug: Output detailed information during the parsing
+           process
+        :return: An Abstract Syntax Tree
+        :rtype: pypuppetdbquery.ast.Query
+        """
         return self.parser.parse(input=text, lexer=self.lexer, debug=debug)
 
+    #: Non-terminal to use as the starting grammar symbol
     start = 'query'
 
     def p_query(self, p):
@@ -189,6 +219,7 @@ class Parser(object):
         'empty :'
         pass
 
+    #: Precedence rules in lowest to highest order
     precedence = (
         ('left', 'OR'),
         ('left', 'AND'),

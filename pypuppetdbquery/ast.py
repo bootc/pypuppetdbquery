@@ -14,6 +14,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""
+Abstract Syntax Tree (AST) for the PuppetDBQuery language. These simple classes
+are used by the :class:`pypuppetdbquery.parser.Parser` in order to represent
+the parsed syntax tree.
+"""
 
 import inspect
 

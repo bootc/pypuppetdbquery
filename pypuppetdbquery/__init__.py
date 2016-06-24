@@ -20,9 +20,28 @@ from .evaluator import Evaluator
 from .parser import Parser
 
 
-def parse(s, json=True, parser_opts=None, evaluator_opts=None):
-    parser = Parser(**(parser_opts or {}))
-    evaluator = Evaluator(**(evaluator_opts or {}))
+def parse(s, json=True, lex_options=None, yacc_options=None):
+    """
+    Parse a PuppetDBQuery-style query and transform it into a PuppetDB "AST"
+    query.
+
+    This function is intented to be the primary entry point for this package.
+    It wraps up all the various components of this package into an easy to
+    consume format. The output of this function is designed to be passed
+    directly into :mod:`pypuppetdb`.
+
+    For examples of the query syntax see `puppet-puppetdbquery
+    <https://github.com/dalen/puppet-puppetdbquery>`_ and `node-puppetdbquery
+    <https://github.com/dalen/node-puppetdbquery>`_ by `Erik Dalén
+    <https://github.com/dalen>`_.
+
+    :param str s: The query to parse and transform
+    :param bool json: Whether to JSON-encode the PuppetDB AST result
+    :param dict lex_options: Options passed to :func:`ply.lex.lex`
+    :param dict yacc_options: Options passed to :func:`ply.yacc.yacc`
+    """
+    parser = Parser(lex_options=lex_options, yacc_options=yacc_options)
+    evaluator = Evaluator()
 
     ast = parser.parse(s)
     raw = evaluator.evaluate(ast)
