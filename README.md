@@ -24,11 +24,11 @@ courtesy of [Read the Docs](https://readthedocs.org/) and
 You can install this package from source or from PyPi.
 
 ```sh
-$ pip install pypuppetdb
+$ pip install pypuppetdbquery
 ```
 
 ```sh
-$ git clone https://github.com/voxpupuli/pypuppetdb
+$ git clone https://github.com/bootc/pypuppetdbquery
 $ python setup.py install
 ```
 
