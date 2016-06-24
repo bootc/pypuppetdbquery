@@ -13,6 +13,7 @@ Contents:
 
    pypuppetdbquery
    examples
+   tests
 
 Indices and tables
 ==================

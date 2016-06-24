@@ -23,7 +23,7 @@ from pypuppetdbquery.parser import Parser, ParseException
 
 class TestParster(unittest.TestCase):
     """
-    Test suite for `pypuppetdbquery.parser.Parser`.
+    Test cases for :class:`pypuppetdbquery.parser.Parser`.
     """
     def setUp(self):
         self.parser = Parser(

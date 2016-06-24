@@ -23,20 +23,22 @@ from pypuppetdbquery import parse
 
 class TestFrontend(unittest.TestCase):
     """
-    Test suite for `pypuppetdbquery.parse`.
+    Test cases targetting :mod:`pypuppetdbquery`, and particularly
+    :func:`pypuppetdbquery.parse`.
     """
     def _parse(self, s, **kwargs):
-        return parse(s, parser_opts={
-            'lex_options': {
+        return parse(
+            s,
+            lex_options={
                 'debug': False,
                 'optimize': False,
             },
-            'yacc_options': {
+            yacc_options={
                 'debug': False,
                 'optimize': False,
                 'write_tables': False,
             },
-        }, **kwargs)
+            **kwargs)
 
     def test_empty_queries(self):
         out = self._parse('')
