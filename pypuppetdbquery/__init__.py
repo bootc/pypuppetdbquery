@@ -14,6 +14,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""
+This Python package contains a port of `Erik Dalén
+<https://github.com/dalen>`__'s PuppetDB Query language to Python.
+
+All the user-facing components of this package are intended to be found in this
+module itself rather than any of the sub-modules.
+"""
 
 from json import dumps as json_dumps
 from .evaluator import Evaluator
