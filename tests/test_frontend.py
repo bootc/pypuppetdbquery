@@ -16,9 +16,17 @@
 # limitations under the License.
 
 import json
+import mock
 import unittest
 
-from pypuppetdbquery import parse
+from pypuppetdbquery import parse, query_facts
+
+
+class FakeNode(object):
+    def __init__(self, node, name, value):
+        self.node = node
+        self.name = name
+        self.value = value
 
 
 class TestFrontend(unittest.TestCase):
@@ -39,6 +47,19 @@ class TestFrontend(unittest.TestCase):
                 'write_tables': False,
             },
             **kwargs)
+
+    def _query_facts(self, pdb, s, facts=None, raw=False):
+        return query_facts(
+            pdb, s, facts, raw,
+            lex_options={
+                'debug': False,
+                'optimize': False,
+            },
+            yacc_options={
+                'debug': False,
+                'optimize': False,
+                'write_tables': False,
+            })
 
     def test_empty_queries(self):
         out = self._parse('')
@@ -65,3 +86,79 @@ class TestFrontend(unittest.TestCase):
                ['=', 'path', ['foo']],
                ['=', 'value', 'bar']]]]]
         self.assertEqual(out, expect)
+
+    def test_query_facts_with_query_and_facts_list(self):
+        mock_pdb = mock.NonCallableMock()
+        mock_pdb.facts = mock.Mock(return_value=[
+            FakeNode('alpha', 'foo', 'bar'),
+        ])
+
+        node_facts = self._query_facts(mock_pdb, 'foo=bar', ['foo'])
+
+        mock_pdb.facts.assert_called_once_with(query=json.dumps([
+            'and',
+            ['in', 'certname',
+             ['extract', 'certname',
+              ['select_fact_contents',
+               ['and',
+                ['=', 'path', ['foo']],
+                ['=', 'value', 'bar']]]]],
+            ['or',
+             ['=', 'name', 'foo']]]))
+
+        self.assertEquals(node_facts, {
+            'alpha': {'foo': 'bar'},
+        })
+
+    def test_query_facts_with_query_and_facts_list_regex(self):
+        mock_pdb = mock.NonCallableMock()
+        mock_pdb.facts = mock.Mock(return_value=[
+            FakeNode('alpha', 'foo', 'bar'),
+        ])
+
+        node_facts = self._query_facts(mock_pdb, 'foo=bar', ['/foo/'])
+
+        mock_pdb.facts.assert_called_once_with(query=json.dumps([
+            'and',
+            ['in', 'certname',
+             ['extract', 'certname',
+              ['select_fact_contents',
+               ['and',
+                ['=', 'path', ['foo']],
+                ['=', 'value', 'bar']]]]],
+            ['or',
+             ['~', 'name', 'foo']]]))
+
+        self.assertEquals(node_facts, {
+            'alpha': {'foo': 'bar'},
+        })
+
+    def test_query_facts_with_facts_list_only(self):
+        mock_pdb = mock.NonCallableMock()
+        mock_pdb.facts = mock.Mock(return_value=[
+            FakeNode('alpha', 'foo', 'bar'),
+        ])
+
+        node_facts = self._query_facts(mock_pdb, '', ['foo'])
+
+        mock_pdb.facts.assert_called_once_with(query=json.dumps([
+            'or',
+            ['=', 'name', 'foo']]))
+
+        self.assertEquals(node_facts, {
+            'alpha': {'foo': 'bar'},
+        })
+
+    def test_query_facts_without_query_or_facts(self):
+        node_facts = self._query_facts(None, '')
+        self.assertTrue(node_facts is None)
+
+    def test_query_facts_in_raw_mode(self):
+        mock_pdb = mock.NonCallableMock()
+        mock_pdb.facts = mock.Mock(return_value=[
+            FakeNode('alpha', 'foo', 'bar'),
+        ])
+
+        node_facts = self._query_facts(mock_pdb, 'foo=bar', raw=True)
+
+        self.assertEquals(node_facts, mock_pdb.facts.return_value)
