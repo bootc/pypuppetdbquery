@@ -1,4 +1,4 @@
-include LICENSE *.md requirements*.txt
+include LICENSE requirements*.txt
 recursive-include pypuppetdbquery *.py
 recursive-include tests *.py
 exclude pypuppetdbquery/lextab.py
