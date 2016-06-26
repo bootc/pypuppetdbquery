@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-Query for nodes using :mod:`pypuppetdb`.
+Query for selected facts on matching nodes using :mod:`pypuppetdb`.
 """
 
 import pypuppetdb
