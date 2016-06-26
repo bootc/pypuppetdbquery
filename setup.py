@@ -24,10 +24,15 @@ ver_path = convert_path('pypuppetdbquery/version.py')
 with open(ver_path) as ver_file:
     exec(ver_file.read(), main_ns)
 
+# Read the "long description" from README.rst
+with open('README.rst') as readme_file:
+    LONG_DESCRIPTION = readme_file.read()
+
 setup(
     name='pypuppetdbquery',
     version=main_ns['__version__'],
-    description='A port of @dalen\'s PuppetDB Query language to Python',
+    description='A port of Erik Dalén\'s PuppetDB Query language to Python',
+    long_description=LONG_DESCRIPTION,
     author='Chris Boot',
     author_email='bootc@bootc.net',
     license='Apache-2.0',
