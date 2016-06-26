@@ -11,9 +11,9 @@ Contents:
 .. toctree::
    :maxdepth: 3
 
-   pypuppetdbquery
+   Introduction <readme>
+   api
    examples
-   tests
 
 Indices and tables
 ==================

@@ -5,11 +5,3 @@ pypuppetdbquery package
     :members:
     :undoc-members:
     :show-inheritance:
-
-Submodules
-----------
-
-.. toctree::
-   :glob:
-
-   submodule/*
