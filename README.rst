@@ -22,8 +22,8 @@ Ruby) and `node-puppetdbquery
 <https://github.com/dalen/node-puppetdbquery>`__ (in JavaScript/NodeJS).
 
 Please see the `pypuppetdbquery documentation
-<http://pypuppetdbquery.readthedocs.io/en/latest/?badge=latest>`__ courtesy of
-`Read the Docs <https://readthedocs.org/>`__ and `Sphinx
+<http://pypuppetdbquery.readthedocs.io/en/latest/>`__ courtesy of `Read the
+Docs <https://readthedocs.org/>`__ and `Sphinx
 <http://www.sphinx-doc.org/en/stable/>`__.
 
 Installation
@@ -65,6 +65,11 @@ Usage Example
 
     for node in pdb.nodes(query=pdb_ast):
         print(node)
+
+For further examples, see the `Examples section
+<http://pypuppetdbquery.readthedocs.io/en/latest/examples.html>`__ of the
+`pypuppetdbquery documentation
+<http://pypuppetdbquery.readthedocs.io/en/latest/>`__.
 
 License
 -------
