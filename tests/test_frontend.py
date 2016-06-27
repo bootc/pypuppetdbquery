@@ -19,7 +19,7 @@ import json
 import mock
 import unittest
 
-from pypuppetdbquery import parse, query_facts
+from pypuppetdbquery import parse, query_facts, query_fact_contents
 
 
 class _FakeNode(object):
@@ -168,3 +168,109 @@ class TestFrontendQueryFacts(unittest.TestCase):
         node_facts = self._query_facts(mock_pdb, 'foo=bar', raw=True)
 
         self.assertEquals(node_facts, mock_pdb.facts.return_value)
+
+
+class TestFrontendQueryFactContents(unittest.TestCase):
+    """
+    Test cases targetting :func:`pypuppetdbquery.query_fact_contents`.
+    """
+
+    def _query_fact_contents(self, pdb, s, facts=None, raw=False):
+        return query_fact_contents(
+            pdb, s, facts, raw,
+            lex_options={
+                'debug': False,
+                'optimize': False,
+            },
+            yacc_options={
+                'debug': False,
+                'optimize': False,
+                'write_tables': False,
+            })
+
+    def test_with_query_and_facts_list(self):
+        mock_pdb = mock.NonCallableMock()
+        mock_pdb.fact_contents = mock.Mock(return_value=[
+            {
+                'value': 14,
+                'certname': 'alpha',
+                'environment': 'production',
+                'path': ['system_uptime', 'days'],
+                'name': 'system_uptime',
+            },
+        ])
+
+        out = self._query_fact_contents(
+            mock_pdb, 'foo=bar', ['system_uptime.days'])
+
+        mock_pdb.fact_contents.assert_called_once_with(query=json.dumps([
+            'and',
+            ['in', 'certname',
+             ['extract', 'certname',
+              ['select_fact_contents',
+               ['and',
+                ['=', 'path', ['foo']],
+                ['=', 'value', 'bar']]]]],
+            ['or',
+             ['=', 'path',
+              ['system_uptime', 'days']]]]))
+
+        self.assertEquals(out, {
+            'alpha': {'system_uptime.days': 14},
+        })
+
+    def test_without_query(self):
+        mock_pdb = mock.NonCallableMock()
+        mock_pdb.fact_contents = mock.Mock(return_value=[
+            {
+                'value': 14,
+                'certname': 'alpha',
+                'environment': 'production',
+                'path': ['system_uptime', 'days'],
+                'name': 'system_uptime',
+            },
+        ])
+
+        out = self._query_fact_contents(mock_pdb, '', ['system_uptime.days'])
+
+        mock_pdb.fact_contents.assert_called_once_with(query=json.dumps([
+            'or',
+            ['=', 'path',
+             ['system_uptime', 'days']]]))
+
+        self.assertEquals(out, {
+            'alpha': {'system_uptime.days': 14},
+        })
+
+    def test_without_either(self):
+        out = self._query_fact_contents(None, '')
+        self.assertTrue(out is None)
+
+    def test_raw_output(self):
+        mock_pdb = mock.NonCallableMock()
+        mock_pdb.fact_contents = mock.Mock(return_value=[
+            {
+                'value': 14,
+                'certname': 'alpha',
+                'environment': 'production',
+                'path': ['system_uptime', 'days'],
+                'name': 'system_uptime',
+            },
+        ])
+
+        out = self._query_fact_contents(
+            mock_pdb, 'foo=bar', ['system_uptime.days'], True)
+
+        mock_pdb.fact_contents.assert_called_once_with(query=json.dumps([
+            'and',
+            ['in', 'certname',
+             ['extract', 'certname',
+              ['select_fact_contents',
+               ['and',
+                ['=', 'path', ['foo']],
+                ['=', 'value', 'bar']]]]],
+            ['or',
+             ['=', 'path',
+              ['system_uptime', 'days']]]]))
+
+        self.assertEquals(out, mock_pdb.fact_contents.return_value)
